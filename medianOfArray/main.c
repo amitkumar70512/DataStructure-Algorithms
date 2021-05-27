@@ -1,61 +1,77 @@
 
 #include <stdio.h>
+#include<stdlib.h>
+#define max(x, y) (((x) > (y)) ? (x) : (y))
+#define min(x, y) (((x) < (y)) ? (x) : (y))
+int n;
 
+
+// A divide and conquer based efficient solution to find median
+// of two sorted arrays of same size.
+
+ 
+int median(int [], int); /* to get median of a sorted array */
+ 
 
 int getMedian(int ar1[], int ar2[], int n)
 {
-	int i = 0; 
-	int j = 0; 
-	int count;
-	int m1 = -1, m2 = -1;
-
-	for (count = 0; count <= n; count++)
-	{
-		
-		if (i == n)
-		{
-			m1 = m2;
-			m2 = ar2[0];
-			break;
-		}
-
-		
-		else if (j == n)
-		{
-			m1 = m2;
-			m2 = ar1[0];
-			break;
-		}
-		
-		if (ar1[i] <= ar2[j])
-		{
-			m1 = m2; 
-			m2 = ar1[i];
-			i++;
-		}
-		else
-		{
-			m1 = m2; 
-			m2 = ar2[j];
-			j++;
-		}
-	}
-
-	return (m1 + m2)/2;
+    /* return -1  for invalid input */
+    if (n <= 0)
+        return -1;
+    if (n == 1)
+        return (ar1[0] + ar2[0])/2;
+    if (n == 2)
+        return (max(ar1[0], ar2[0]) + min(ar1[1], ar2[1])) / 2;
+ 
+    int m1 = median(ar1, n); /* get the median of the first array */
+    int m2 = median(ar2, n); /* get the median of the second array */
+ 
+    /* If medians are equal then return either m1 or m2 */
+    if (m1 == m2)
+        return m1;
+ 
+    
+    if (m1 < m2)
+    {
+        if (n % 2 == 0)
+            return getMedian(ar1 + n/2 - 1, ar2, n - n/2 +1);
+        return getMedian(ar1 + n/2, ar2, n - n/2);
+    }
+ 
+    /* if m1 > m2 then median must exist in ar1[....m1] and
+        ar2[m2...] */
+    if (n % 2 == 0)
+        return getMedian(ar2 + n/2 - 1, ar1, n - n/2 + 1);
+    return getMedian(ar2 + n/2, ar1, n - n/2);
+}
+ 
+/* Function to get median of a sorted array */
+int median(int arr[], int n)
+{
+    if (n%2 == 0)
+        return (arr[n/2] + arr[n/2-1])/2;
+    else
+        return arr[n/2];
 }
 
-
 int main()
-{
-	int ar1[] = {1, 12, 15, 26, 38};
-	int ar2[] = {2, 13, 17, 30, 45};
+{   printf("\n Enter the size of arrays:> ");
+    scanf("%d",&n);
+    int ar1[n],ar2[n];
+    printf("\n Enter data in first array :\n");
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&ar1[i]);
+    }
+      printf("\n\n Enter data in  Second array :\n");
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&ar2[i]);
+    }
 
-	int n1 = sizeof(ar1)/sizeof(ar1[0]);
-	int n2 = sizeof(ar2)/sizeof(ar2[0]);
-	if (n1 == n2)
-		printf("Median is %d", getMedian(ar1, ar2, n1));
-	else
-		printf("Doesn't work for arrays of unequal size");
+
+		printf("Median is %d", getMedian(ar1, ar2, n));
+	
 	getchar();
 	return 0;
 }
