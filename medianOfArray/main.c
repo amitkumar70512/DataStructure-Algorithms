@@ -1,4 +1,5 @@
 
+
 #include <stdio.h>
 #include<stdlib.h>
 #define max(x, y) (((x) > (y)) ? (x) : (y))
@@ -10,7 +11,7 @@ int n;
 // of two sorted arrays of same size.
 
  
-int median(int [], int); /* to get median of a sorted array */
+int median(int [], int); 
  
 
 int getMedian(int ar1[], int ar2[], int n)
@@ -30,7 +31,8 @@ int getMedian(int ar1[], int ar2[], int n)
     if (m1 == m2)
         return m1;
  
-    
+    /* if m1 < m2 then median must exist in ar1[m1....] and
+        ar2[....m2] */
     if (m1 < m2)
     {
         if (n % 2 == 0)
@@ -69,9 +71,19 @@ int main()
         scanf("%d",&ar2[i]);
     }
 
-
-		printf("Median is %d", getMedian(ar1, ar2, n));
+        printf("\n \n Array 1: ");
+            for(int i=0;i<n;i++)
+                {
+                    printf(" %d ",ar1[i]);
+                }
+        printf("\n Array 2: ");
+            for(int i=0;i<n;i++)
+                {
+                    printf(" %d ",ar2[i]);
+                }
+		printf("\n Median is %d", getMedian(ar1, ar2, n));
 	
 	getchar();
 	return 0;
 }
+
